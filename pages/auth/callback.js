@@ -86,7 +86,13 @@ const Callback = ({ error, access_token }) => {
         );
     }
 
-    return <p>Loading...</p>
+    return (
+        <div className="columns">
+            <div className="column has-text-centered">
+                <p>Loading...</p>
+            </div>
+        </div>
+    )
 };
 
 export default Callback;
