@@ -8,22 +8,6 @@ const userReducer = (state, action) => {
             return { ...state, user, token };
         }
 
-        case 'SET_USER': {
-            return { ...state, user: {...action.payload} };
-        }
-
-        case 'SET_TOKEN': {
-            return { ...state, token: action.payload };
-        }
-
-        case 'SET_PRIVATE_REPOS': {
-            return { ...state, privateRepos: [...action.payload] };
-        }
-
-        case 'SET_PUBLIC_REPOS': {
-            return { ...state, publicRepos: [...action.payload] };
-        }
-
         default:
             throw new Error(`Unsupported action type: ${action.type}`);
     }
