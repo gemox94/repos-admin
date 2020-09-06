@@ -1,7 +1,8 @@
-import React, { useEffect, useState }  from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as axios from 'axios';
+import {UserContext} from '../../context/UserContextProvider';
 
 export async function getServerSideProps({ query }) {
 
@@ -42,6 +43,7 @@ export async function getServerSideProps({ query }) {
 
 const Callback = ({ error, access_token }) => {
 
+    const [state, dispatch] = useContext(UserContext);
     const [callbackError, setCallbackError] = useState(error);
     const router = useRouter();
 
@@ -58,6 +60,8 @@ const Callback = ({ error, access_token }) => {
                     email: res.data.email,
                     url: res.data.url
                 };
+
+                dispatch({type: 'SET_SESSION', payload: { user, token: access_token }});
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('token', access_token);
                 setTimeout(() => router.replace('/'), 2000);
@@ -69,7 +73,7 @@ const Callback = ({ error, access_token }) => {
 
     }, []);
 
-    if (error) {
+    if (callbackError) {
         return (
             <>
                 <p>Something went wrong, try again!</p>
