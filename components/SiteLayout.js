@@ -2,40 +2,45 @@ import React, { useContext } from 'react';
 
 import { UserContext } from '../context/UserContextProvider';
 import Link from 'next/link';
+import Content from '../styled/Content';
 
 const SiteLayout = ({ children }) => {
 
     const [{ user }] = useContext(UserContext);
+    const avatarUrl = user && user.avatar ? user.avatar : 'https://avatars.dicebear.com/api/bottts/github.svg';
 
     return(
         <>
-            <nav className="level px-5 py-3 has-background-primary">
+            <div className="container py-5">
 
-                <div className="level-left">
-                    <div className="level-item">
-                        <img src="/repos-admin.png" alt="Repos Admin" width="80px" height="80px"/>
+                <div className="columns">
+                    <div className="column is-3 has-text-centered">
+                        <img src={avatarUrl} alt="avatar" width="250px" style={{ borderRadius: '50%' }}/>
+                        {user && user.name && <h4 className="title is-4">{user.name}</h4>}
                     </div>
-                    <div className="level-item">
-                        <Link href="/private-repos">
-                            <a className="button is-primary">Private repos</a>
-                        </Link>
-                    </div>
-                    <div className="level-item">
-                        <Link href="/public-repos">
-                            <a className="button is-primary">Public repos</a>
-                        </Link>
+                    <div className="column is-9">
+                        <div className="tabs">
+                            <ul>
+                                <li className={ !user ? 'is-active' : ''}>
+                                    <a>Home</a>
+                                </li>
+                                {user && (
+                                    <>
+                                        <li>
+                                            <a>Private repos</a>
+                                        </li>
+                                        <li>
+                                            <a>Public repos</a>
+                                        </li>
+                                    </>
+                                )}
+                            </ul>
+                        </div>
+                        <Content>
+                            { children }
+                        </Content>
                     </div>
                 </div>
-
-                <div className="level-right">
-                    <div className="level-item has-text-white">
-                        <span>{(user && user.name) || ''}</span>
-                    </div>
-                </div>
-
-            </nav>
-            <div className="container">
-                { children }
             </div>
         </>
     );
